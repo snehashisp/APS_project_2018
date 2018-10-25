@@ -13,7 +13,7 @@ struct node *create_node(int node_id) {
 void insert_edge(struct node *start_node,struct node *end_node,int weight) {
 
 	start_node->edge_list.push_back(pair<struct node*,int>(end_node,weight));
-	start_node->edge_list.push_back(pair<struct node*,int>(start_node,weight));
+	end_node->edge_list.push_back(pair<struct node*,int>(start_node,weight));
 
 }
 
