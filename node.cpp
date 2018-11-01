@@ -1,19 +1,18 @@
 #include"node.h"
-#include<climits>
 
 
-struct node *create_node(int node_id) {
+node *create_node(int node_id) {
 
-	struct node *newnode = new node;
+	node *newnode = new node;
 	newnode->node_id = node_id;
-	newnode->current_dist = INT_MAX;
-	return new_node;
+	newnode->current_dist = 0;
+	return newnode;
 }
 
-void insert_edge(struct node *start_node,struct node *end_node,int weight) {
+void insert_edge(node *start_node,node *end_node,int weight) {
 
-	start_node->edge_list.push_back(pair<struct node*,int>(end_node,weight));
-	end_node->edge_list.push_back(pair<struct node*,int>(start_node,weight));
+	start_node->edge_list.push_back(std::pair<node*,int>(end_node,weight));
+	end_node->edge_list.push_back(std::pair<node*,int>(start_node,weight));
 
 }
 

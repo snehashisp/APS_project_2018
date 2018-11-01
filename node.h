@@ -1,13 +1,14 @@
 #include<cstdio>
 #include<vector>
+#include<climits>
 
 struct node {
 	
 	int node_id;
-	int current_dist;
-	std::vector<std::pair<struct node *,int>> edge_list;
+	int current_dist = 0;
+	std::vector<std::pair<node *,int>> edge_list;
 
 };
 
-struct node *create_node(int node_id);
-void insert_edge(struct node *start_node,struct node *end_node,int weight);
+node *create_node(int node_id);
+void insert_edge(node *start_node,node *end_node,int weight);

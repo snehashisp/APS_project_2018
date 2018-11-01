@@ -8,34 +8,36 @@
 
 struct fibo_node {
 
-	fibo_node *next,*prev;
-	fibo_node *parent,*child;
+	fibo_node *next = this,*prev = this;
+	fibo_node *parent = NULL,*child = NULL;
 
-	int mark;
-	int degree;
+	int mark = UNMARK;
+	int degree = 0;
 
-	int key;
-	void *data;
+	int key = INT_MAX;
+	node *data = NULL;
 
 };
 
 void add_to_list(fibo_node *list_head,fibo_node *node);
 void *remove_from_list(fibo_node *node);
-fibo_node *init_node(int key,void *data);
+fibo_node *init_node(int key,node *data);
 void add_child(fibo_node *parent,fibo_node *child);
-void remove_node(fibo_node *node);
+int print_tree(fibo_node *root);
 
 class fibo_heap {
 
-	fibo_node *min_node;
-	int total_nodes;
+	fibo_node *min_node = NULL;
+	int total_nodes = 0;
 	void consolidate();
 
 	public:
 
-	void insert(int key,void *data);
+	bool is_empty();
+	void show_tree();
+	void insert(fibo_node *new_node);
+	void remove_node(fibo_node *node);
 	fibo_node *extract_min();
-	void decrease_key(fibo_node *node);
-	void delete_node(fibo_node *node);
+	void decrease_key(fibo_node *node,int key);
 
 };
