@@ -10,11 +10,11 @@ int print_tree(fibo_node *root) {
 		fibo_node *next = root;
 		do {
 			//printf("(%d %d)",root -> key,root -> data -> node_id);
-			num += print_tree(next -> child);
+			num += (print_tree(next -> child) + 1);
 			next = next -> next;
 		}while(next != root);
 	}
-	return num + 1;
+	return num;
 }
 
 fibo_node *init_node(int key,node *data) {
@@ -62,7 +62,7 @@ void add_child(fibo_node *parent,fibo_node *child) {
 void fibo_heap :: remove_node(fibo_node *node) {
 
 	fibo_node *parent = node -> parent;
-	//if(node == min_node) min_node = NULL;
+	//if(node == min_node) min_node = min_node -> next;
 	if(parent) {
 		parent -> degree -= 1;
 		if(parent -> degree == 0) parent -> child = NULL;
@@ -77,11 +77,11 @@ void fibo_heap :: remove_node(fibo_node *node) {
 
 void fibo_heap :: consolidate() {
 
-	printf("consolidate calld\n");
-	show_tree();
+	//printf("consolidate calld\n");
+	//show_tree();
 	//get log of the number of nodes in the tree 
-	int log_nodes = ceil(log((double)total_nodes)/log(2)) + 1;
-	printf("total_nodes %d log_nodes %d\n",total_nodes,log_nodes);
+	int log_nodes = ceil(log((double)total_nodes)/(double)log(2)) + 1;
+	//printf("total_nodes %d log_nodes %d\n",total_nodes,log_nodes);
 	//Array to hold the different degree trees of the consolidated root list
 	fibo_node *deg_array[log_nodes];
 	//initialize to null
@@ -108,14 +108,12 @@ void fibo_heap :: consolidate() {
 				it = deg_array[deg];
 				deg_array[deg] = temp;
 			}
-			//printf("%d ",deg);
 			add_child(it,deg_array[deg]);
 			deg_array[deg] = NULL;
 			deg += 1; 
 		}
 		deg_array[deg] = it;
 	}
-
 	//recreate head list
 	min_node = NULL;
 	for(int i = 0 ; i < log_nodes; i++) {
@@ -131,8 +129,8 @@ void fibo_heap :: consolidate() {
 			}
 		}
 	}
-	printf("consolidate end\n");
-	show_tree();
+	//printf("consolidate end\n");
+	//show_tree();
 
 }
 
@@ -174,16 +172,14 @@ fibo_node *fibo_heap :: extract_min() {
 		remove_from_list(temp);
 		consolidate();
 	}
-
-	if(min_node == NULL) debug(10);
 	return temp;
 
 }
 
 void fibo_heap :: decrease_key(fibo_node *node,int key) {
 
-	printf("Decrease key start %d %d\n",node -> key,key);
-	show_tree();
+	//printf("Decrease key start %d %d\n",node -> key,key);
+	//show_tree();
 	node -> key = key;
 	fibo_node *parent = node -> parent,*temp;
 	if(parent == NULL) {
@@ -196,14 +192,15 @@ void fibo_heap :: decrease_key(fibo_node *node,int key) {
 		while(parent && parent -> mark == MARK) {
 			temp = parent;
 			parent = parent -> parent;
+			if(!parent) break;
 			remove_node(temp);
 			insert(temp);
 		}
 		if(parent) parent -> mark = MARK;
 		else temp -> mark = MARK;
 	}
-	printf("Decrease key end\n");
-	show_tree();
+	//printf("Decrease key end\n");
+	//show_tree();
 }
 
 void fibo_heap :: show_tree() {
@@ -213,8 +210,7 @@ void fibo_heap :: show_tree() {
 	fibo_node *root = min_node;
 	do {
 		//printf("(%d %d)",root -> key,root -> data -> node_id);
-		tn += print_tree(root -> child);
-		//printf("\n");
+		tn += (print_tree(root -> child) + 1);
 		root = root -> next;
 	}while(root != min_node);
 	printf("\n[%d]\n",tn);
