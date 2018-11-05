@@ -5,12 +5,12 @@
 #ifndef NODE_STRUCT
 #define NODE_STRUCT
 struct node {
-	
 	int node_id;
 	int current_dist = 0;
 	std::vector<std::pair<node *,int>> edge_list;
 	node *next = NULL;
 	node *prev = NULL;
+
 };
 
 
