@@ -1,7 +1,10 @@
 #include<iostream>
+#include<list>
 #include"fibonacci.h"
 #include"van_emde.h"
 //#include<iostream>
+#define dbg(A) printf(A);
+#define dl printf("\n\n");
 using namespace std;
 
 //all functions return a distance vector with minimum distace from source which is assumed to be the 0 indexed node
@@ -57,14 +60,42 @@ int *dijkstra_fibo(node *node_list,int total_nodes,int source) {
 //function to calculation dijkstra using binomial heaps
 int *dijkstra_bino(node *node_list,int total_nodes,int source) {
 
-	
+
+
 }
 
 //function to calculation dijkstra using van emde boas trees
-int *dijkstra_vEBT(node *node_list,int total_nodes) {
+int *dijkstra_vEBT(veb_tree *tree,node *node_list,int total_nodes,int source) {
 
+	int cur = 0;
+	int *dist_vec = new int[total_nodes];
+	for(int i=0; i < total_nodes; i++) {
+		dist_vec[i] = -1;
+		if(i == source) 
+			node_list[i].current_dist = 0;
+		else node_list[i].current_dist = tree->universe - 1;
+		tree -> insert(&node_list[i]);
+	}
+
+	while(cur < total_nodes) {
+		//tree -> show_tree(); dl
+		node *min_node = tree->get_min();
+		dist_vec[min_node -> node_id] = min_node -> current_dist;
+		tree -> delnode(min_node);
+
+		for(auto i = min_node->edge_list.begin(); i != min_node->edge_list.end(); i++) {
+			node *cur = i -> first;
+			if(dist_vec[cur->node_id] != -1) continue;
+			if(cur -> current_dist > (i -> second + min_node -> current_dist)) {
+				tree -> delnode(cur);
+				cur -> current_dist = i -> second + min_node -> current_dist;
+				tree -> insert(cur);
+			}
+		}
+		cur++;
+	}
+	return dist_vec;
 }
-
 
 node *get_data(int &order) {
 
@@ -91,24 +122,46 @@ void print_dist(int *dist_vec,int size) {
 	printf("\n");
 }
 
+void veb_test() {
+
+	node node_list[6];
+	veb_tree nt;
+	nt.init(8,new node);
+	int arr[] = { 0,7, 7, 7, 7, 7};
+	for(int i = 0; i < 6; i++) {
+		node_list[i].current_dist = arr[i];
+		nt.insert(&node_list[i]);
+	}
+	nt.show_tree();
+	printf("\n");
+	for(int i = 0; i < 6; i++) {
+		nt.delnode(&node_list[i]);
+		nt.show_tree();
+		printf("\n\n");
+	}
+
+
+
+}
 
 int main() {
 
-	//int list_size;
-	//node *node_list = get_data(list_size);
+	//veb_test();
+	
+	int veb_size;
+	scanf("%d",&veb_size);
+	veb_tree newTree;
+	newTree.init(veb_size,new node);
+
+	
+	int list_size;
+	node *node_list = get_data(list_size);
 	int source;
 	scanf("%d",&source);
-
-	veb_tree newTree;
-	newTree.init(source);
-	node testnodes[7];
-	int arr[] = {2,3,4,5,7,14,15};
-	for(int i = 0; i < 7;i++) {
-		testnodes[i].current_dist = arr[i];
-		newTree.insert(&testnodes[i]);
-	}
-	newTree.show_tree();
-	//int *djk = dijkstra_fibo(node_list,list_size,source-1);
-	//print_dist(djk,list_size);
+	
+	int *djk = dijkstra_vEBT(&newTree,node_list,list_size,source-1);
+	print_dist(djk,list_size);
+	
 	return 0;
+
 }
