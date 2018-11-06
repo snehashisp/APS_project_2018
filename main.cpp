@@ -148,19 +148,23 @@ int main() {
 
 	//veb_test();
 	
-	int veb_size;
-	scanf("%d",&veb_size);
-	veb_tree newTree;
-	newTree.init(veb_size,new node);
-
-	
 	int list_size;
 	node *node_list = get_data(list_size);
 	int source;
 	scanf("%d",&source);
 	
+
+	int veb_size;
+	scanf("%d",&veb_size);
+	veb_tree newTree;
+	newTree.init(veb_size,new node);
+
 	int *djk = dijkstra_vEBT(&newTree,node_list,list_size,source-1);
+	//int *fdjk = dijkstra_fibo(node_list,list_size,source-1);
+	printf("VEB\n");
 	print_dist(djk,list_size);
+	//printf("FIBO\n");
+	//print_dist(fdjk,list_size);
 	
 	return 0;
 
