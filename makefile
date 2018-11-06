@@ -1,4 +1,4 @@
 CC=g++
 
-TestDijkstras: node.o Binomial-Heap.o TestDijkstras.cpp
-	g++ -g -o TestDijkstras TestDijkstras.cpp Binomial-Heap.o node.o
+main: node.o Binomial-Heap.o fibonacci.o van_emde.o main.cpp
+	g++ -g -o main main.cpp Binomial-Heap.o fibonacci.o van_emde.o node.o

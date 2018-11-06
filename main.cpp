@@ -2,6 +2,7 @@
 #include<list>
 #include"fibonacci.h"
 #include"van_emde.h"
+#include"Binomial-Heap.h"
 //#include<iostream>
 #define dbg(A) printf(A);
 #define dl printf("\n\n");
@@ -58,11 +59,11 @@ int *dijkstra_fibo(node *node_list,int total_nodes,int source) {
 }	
 
 //function to calculation dijkstra using binomial heaps
-int *dijkstra_bino(node *node_list,int total_nodes,int source) {
+//int *dijkstra_bino(node *node_list,int total_nodes,int source) {
 
 
 
-}
+//}
 
 //function to calculation dijkstra using van emde boas trees
 int *dijkstra_vEBT(veb_tree *tree,node *node_list,int total_nodes,int source) {
@@ -97,7 +98,9 @@ int *dijkstra_vEBT(veb_tree *tree,node *node_list,int total_nodes,int source) {
 	return dist_vec;
 }
 
-node *get_data(int &order) {
+
+
+node *get_data1(int &order) {
 
 	int n;
 	scanf("%d",&n);
@@ -105,7 +108,7 @@ node *get_data(int &order) {
 	node *node_list = new node[order];
 	for(int i = 0; i < order; i++) {
 		node_list[i].node_id = i;
-		node_list[i].current_dist = 0;
+		node_list[i].current_dist = INT_MAX-1;
 	}
 	scanf("%d",&n);
 	while(n--) {
@@ -115,6 +118,7 @@ node *get_data(int &order) {
 	}
 	return node_list;
 }
+
 
 void print_dist(int *dist_vec,int size) {
 
@@ -148,7 +152,7 @@ int main() {
 
 	//veb_test();
 
-	
+	/*
 	int list_size;
 	node *node_list = get_data(list_size);
 	int source;
@@ -161,7 +165,15 @@ int main() {
 
 	int *djk = dijkstra_vEBT(&newTree,node_list,list_size,source-1);
 	print_dist(djk,list_size);
-	
+	*/
+
+
+	int list_size;
+	node *node_list = get_data1(list_size);
+	int source;
+	scanf("%d",&source);
+	int *djk = dijkstra_bino(node_list,list_size,source-1);
+	print_dist(djk,list_size);
 	return 0;
 
 }

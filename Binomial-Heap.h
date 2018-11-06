@@ -45,5 +45,5 @@ list<Tree*> decreaseKeyBHeap(list<Tree*> heap,node* n, int oldV, int newV);
 Tree * findMin(list<Tree*> heap);
 //extract the minimum node
 list<Tree*> extractMin(list<Tree*> heap);
-node *get_data(int &order);
+node *get_data1(int &order);
 int *dijkstra_bino(node *node_list,int total_nodes,int source);

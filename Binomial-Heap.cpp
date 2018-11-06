@@ -238,7 +238,7 @@ list<Tree*> extractMin(list<Tree*> heap){
 }
 
 
-node *get_data(int &order) {
+node *get_data1(int &order) {
 
 	int n;
 	scanf("%d",&n);
