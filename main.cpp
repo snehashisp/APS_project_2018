@@ -100,26 +100,6 @@ int *dijkstra_vEBT(veb_tree *tree,node *node_list,int total_nodes,int source) {
 
 
 
-node *get_data1(int &order) {
-
-	int n;
-	scanf("%d",&n);
-	order = n;
-	node *node_list = new node[order];
-	for(int i = 0; i < order; i++) {
-		node_list[i].node_id = i;
-		node_list[i].current_dist = INT_MAX-1;
-	}
-	scanf("%d",&n);
-	while(n--) {
-		int a,b,c;
-		scanf("%d%d%d",&a,&b,&c);
-		insert_edge(&node_list[a-1],&node_list[b-1],c);
-	}
-	return node_list;
-}
-
-
 void print_dist(int *dist_vec,int size) {
 
 	for(int i = 0; i < size; i++) printf("%d ", dist_vec[i]);

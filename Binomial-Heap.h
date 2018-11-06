@@ -1,5 +1,12 @@
-#include <bits/stdc++.h>
+//#include <bits/stdc++.h>
+#include <list>
 #include "node.h"
+#include <iostream>
+#include <cstdio>
+#include <string>
+#include <climits>
+#include <cstdlib>
+
 using namespace std;
 typedef long l;
 typedef struct Tree Tree;
