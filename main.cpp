@@ -3,6 +3,8 @@
 #include"fibonacci.h"
 #include"van_emde.h"
 #include"Binomial-Heap.h"
+#include"chrono"
+using namespace std::chrono;
 //#include<iostream>
 #define dbg(A) printf(A);
 #define dl printf("\n\n");
@@ -98,6 +100,70 @@ int *dijkstra_vEBT(veb_tree *tree,node *node_list,int total_nodes,int source) {
 	return dist_vec;
 }
 
+int *dijkstra_bino(node *node_list,int total_nodes,int source) {
+	list<Tree *> bHeap;
+	int *dist_vec=new int[total_nodes];
+	for(int i = 0; i < total_nodes; i++) {
+		if(i == source){
+			node_list[i].current_dist=0;
+			bHeap=insert(bHeap,&node_list[i],0);
+			// cout<<"hello\n";
+			// printHeap(bHeap);
+			continue;
+		}
+		bHeap=insert(bHeap,&node_list[i],INT_MAX-1);//in case graph is disconnected
+		// printHeap(bHeap);
+	}
+	// printHeap(bHeap);
+	while(!bHeap.empty()){	
+		// cout<<"size "<<bHeap.size()<<endl;
+		// printHeap(bHeap);
+		Tree *head=findMin(bHeap);
+		node *cur=head->data;
+		// cout<<(cur==NULL)<<endl;
+		// cout<<head->value<<" "<<cur->node_id<<endl;
+		bHeap=extractMin(bHeap);
+		dist_vec[cur->node_id]=head->value;
+		for(vector<std::pair<node *,int> > :: iterator i = cur->edge_list.begin(); i != cur->edge_list.end(); i++) {
+			// printHeap(bHeap);
+			// if(i->first->current_dist ) continue;
+			int adj_node = i->first->node_id;
+			// cout<<"adj node "<<adj_node<<" "<<node_list[adj_node].current_dist<<" "<<(cur->current_dist + i -> second)<<endl;
+			//check if current distance from source is greater than if we take a path through the current selected node
+			if(node_list[adj_node].current_dist > (cur->current_dist + i -> second)) {
+				int oldV=node_list[adj_node].current_dist;
+				node_list[adj_node].current_dist=(cur->current_dist + i -> second);
+				bHeap=decreaseKeyBHeap(bHeap,&node_list[adj_node],oldV,(cur->current_dist + i -> second));
+				// printHeap(bHeap);
+				// heap.decrease_key(&node_vec[adj_node],node_vec[cur -> node_id].key + i -> second);
+			}
+		}
+		
+
+	}
+
+	return dist_vec;
+}
+
+
+node *get_data(int &order) {
+
+	int n;
+	scanf("%d",&n);
+	order = n;
+	node *node_list = new node[order];
+	for(int i = 0; i < order; i++) {
+		node_list[i].node_id = i;
+		node_list[i].current_dist = INT_MAX;
+	}
+	scanf("%d",&n);
+	while(n--) {
+		int a,b,c;
+		scanf("%d%d%d",&a,&b,&c);
+		insert_edge(&node_list[a-1],&node_list[b-1],c);
+	}
+	return node_list;
+}
 
 
 void print_dist(int *dist_vec,int size) {
@@ -132,7 +198,7 @@ int main() {
 
 	//veb_test();
 
-	/*
+	
 	int list_size;
 	node *node_list = get_data(list_size);
 	int source;
@@ -143,11 +209,36 @@ int main() {
 	veb_tree newTree;
 	newTree.init(veb_size,new node);
 
+	auto start = high_resolution_clock::now();
 	int *djk = dijkstra_vEBT(&newTree,node_list,list_size,source-1);
+	auto end = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(end - start);
+	cout << duration.count() << endl;
 	print_dist(djk,list_size);
-	*/
+	
+	for(int i=0; i < list_size; i++) {
+		node_list[i].current_dist = 0;
+	}
 
+	start = high_resolution_clock::now();
+	djk = dijkstra_fibo(node_list,list_size,source-1);
+	end = high_resolution_clock::now();
+	duration = duration_cast<microseconds>(end - start);
+	cout << duration.count() << endl;
+	print_dist(djk,list_size);
 
+	for(int i=0; i < list_size; i++) {
+		node_list[i].current_dist = INT_MAX - 1;
+	}
+
+	start = high_resolution_clock::now();
+	djk = dijkstra_bino(node_list,list_size,source-1);
+	end = high_resolution_clock::now();
+	duration = duration_cast<microseconds>(end - start);
+	cout << duration.count() << endl;
+	print_dist(djk,list_size);
+	
+	/*
 	int list_size;
 	node *node_list = get_data1(list_size);
 	int source;
@@ -155,5 +246,6 @@ int main() {
 	int *djk = dijkstra_bino(node_list,list_size,source-1);
 	print_dist(djk,list_size);
 	return 0;
-
+	*/
+	return 0;
 }
