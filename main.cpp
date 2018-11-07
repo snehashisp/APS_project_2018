@@ -1,6 +1,6 @@
 #include<iostream>
 #include"fibonacci.h"
-#include"van_emde.h"
+// #include"van_emde.h"
 //#include<iostream>
 using namespace std;
 
