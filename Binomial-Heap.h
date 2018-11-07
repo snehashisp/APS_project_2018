@@ -41,16 +41,15 @@ list<Tree*> merge(list<Tree*> heap1, list<Tree*> heap2);
 			//merge BTrees corresponding to current and next
 list<Tree*> adjust(list<Tree*> heap);
 //insert a new node(BTree with 0 degree) in BHeap
-list<Tree *> insert(list<Tree*> heap,node *data,int value);
+list<Tree *> insert(list<Tree*> heap, Tree *nNode);
 // Function to search for an element 
 Tree *findNode(Tree* tree, int val, node* n);
 Tree* find(list<Tree*> heap,int val, node* n);
 // Function to decrease the value of old_val 
 // to new_val 
-list<Tree*> decreaseKeyBHeap(list<Tree*> heap,node* n, int oldV, int newV);
+list<Tree*> decreaseKeyBHeap(list<Tree*> heap, int oldV, int newV,Tree* nnode, Tree *nodes[]);
 //return root node of BTree with minimum value :O(logn)
 Tree * findMin(list<Tree*> heap);
 //extract the minimum node
 list<Tree*> extractMin(list<Tree*> heap);
-node *get_data1(int &order);
 int *dijkstra_bino(node *node_list,int total_nodes,int source);

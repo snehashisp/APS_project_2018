@@ -102,18 +102,25 @@ int *dijkstra_vEBT(veb_tree *tree,node *node_list,int total_nodes,int source) {
 
 int *dijkstra_bino(node *node_list,int total_nodes,int source) {
 	list<Tree *> bHeap;
+	Tree *nodes[total_nodes];
+	Tree *nNode;
 	int *dist_vec=new int[total_nodes];
 	for(int i = 0; i < total_nodes; i++) {
 		if(i == source){
 			node_list[i].current_dist=0;
-			bHeap=insert(bHeap,&node_list[i],0);
+			nNode=newNode(&node_list[i],0);
+			nodes[i]=nNode;
+			bHeap=insert(bHeap,nodes[i]);
 			// cout<<"hello\n";
 			// printHeap(bHeap);
 			continue;
 		}
-		bHeap=insert(bHeap,&node_list[i],INT_MAX-1);//in case graph is disconnected
+		nNode=newNode(&node_list[i],INT_MAX-1);
+		nodes[i]=nNode;
+		bHeap=insert(bHeap,nodes[i]);//in case graph is disconnected
 		// printHeap(bHeap);
 	}
+
 	// printHeap(bHeap);
 	while(!bHeap.empty()){	
 		// cout<<"size "<<bHeap.size()<<endl;
@@ -133,12 +140,14 @@ int *dijkstra_bino(node *node_list,int total_nodes,int source) {
 			if(node_list[adj_node].current_dist > (cur->current_dist + i -> second)) {
 				int oldV=node_list[adj_node].current_dist;
 				node_list[adj_node].current_dist=(cur->current_dist + i -> second);
-				bHeap=decreaseKeyBHeap(bHeap,&node_list[adj_node],oldV,(cur->current_dist + i -> second));
+				// cout<<(adj_node)<<" " <<((nodes[adj_node])->value)<<endl;
+				bHeap=decreaseKeyBHeap(bHeap,oldV,(cur->current_dist + i -> second),nodes[adj_node],nodes);
 				// printHeap(bHeap);
 				// heap.decrease_key(&node_vec[adj_node],node_vec[cur -> node_id].key + i -> second);
 			}
+			// printHeap(bHeap);
 		}
-		
+		// printHeap(bHeap);
 
 	}
 

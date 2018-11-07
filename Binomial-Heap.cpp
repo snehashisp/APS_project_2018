@@ -2,7 +2,7 @@
 //print BTree
 void printTree(Tree *root){ 
     while(root!=NULL){ 
-        cout<<root->value<<"->"<<root->data->node_id<< " "; 
+        cout<<root->value<<"->"<<root->data->node_id<<" "<<root->data->current_dist<< " "; 
         printTree(root->child); 
         root=root->sibling; 
     } 
@@ -135,8 +135,8 @@ list<Tree*> adjust(list<Tree*> heap){
 }
 
 //insert a new node(BTree with 0 degree) in BHeap
-list<Tree *> insert(list<Tree*> heap,node *data,int value){
-	Tree * nNode=newNode(data,value);
+list<Tree *> insert(list<Tree*> heap, Tree *nNode){
+	// Tree * nNode=newNode(data,value);
 	list<Tree *> newHeap;
 	newHeap.push_back(nNode);
 	//merge return new list with Btrees in nondecending order of degree
@@ -176,12 +176,13 @@ Tree* find(list<Tree*> heap,int val, node* n){
 
 // Function to decrease the value of old_val 
 // to new_val 
-list<Tree*> decreaseKeyBHeap(list<Tree*> heap,node* n, int oldV, int newV) 
+list<Tree*> decreaseKeyBHeap(list<Tree*> heap, int oldV, int newV,Tree* nnode, Tree *nodes[]) 
 { 
     // First check element present or not 
     // cout<<"in dc "<<(n->node_id)<<endl;
     Tree* _node;
-	_node=find(heap, oldV,n); 
+	// _node=find(heap, oldV,n); 
+	_node=nnode;
 	// cout<<"found "<<(_node->data->node_id)<<endl;
 
     // return if Node is not present 
@@ -195,10 +196,13 @@ list<Tree*> decreaseKeyBHeap(list<Tree*> heap,node* n, int oldV, int newV)
     // Update the heap according to reduced value 
     while(parent!=NULL&&_node->value<parent->value) 
     { 
+        
         swap(_node->value, parent->value); 
         swap(_node->data,parent->data);
+        swap(nodes[_node->data->node_id],nodes[parent->data->node_id]);
         _node=parent; 
         parent=parent->parent; 
+
     } 
     return heap;
 } 
