@@ -3,7 +3,8 @@
 #include"fibonacci.h"
 #include"van_emde.h"
 #include"Binomial-Heap.h"
-#include"chrono"
+#include<cstring>
+#include<chrono>
 using namespace std::chrono;
 //#include<iostream>
 #define dbg(A) printf(A);
@@ -194,58 +195,86 @@ void veb_test() {
 
 }
 
-int main() {
+int main(int args,char *argc[]) {
 
 	//veb_test();
 
-	
+	bool bino = false,fibo = false ,veb = false;
+
 	int list_size;
 	node *node_list = get_data(list_size);
 	int source;
 	scanf("%d",&source);
-	
+	int avgRuns = 10;
+	if(args > 1) {
+		sscanf(argc[1],"%d",&avgRuns);
+	}
+	if(args > 2) {
+		if(strcmp(argc[2],"bino") == 0) bino = true;
+		if(strcmp(argc[2],"fibo") == 0) fibo = true;
+		if(strcmp(argc[2],"veb") == 0) veb = true;
+	}
+	else bino = fibo = veb = true;
+
 	int veb_size;
 	scanf("%d",&veb_size);
 	veb_tree newTree;
 	newTree.init(veb_size,new node);
 
-	auto start = high_resolution_clock::now();
-	int *djk = dijkstra_vEBT(&newTree,node_list,list_size,source-1);
-	auto end = high_resolution_clock::now();
+	int total_duration = 0;
+	int *djk;
+	auto start = high_resolution_clock::now(),end = high_resolution_clock::now();	
 	auto duration = duration_cast<microseconds>(end - start);
-	cout << duration.count() << endl;
-	print_dist(djk,list_size);
-	
-	for(int i=0; i < list_size; i++) {
-		node_list[i].current_dist = 0;
+
+	//perform an average of runs as defined in the avgRuns parameter
+	cout << list_size << " " << veb_size << " ";
+	if(veb) {
+		for(int count = 0; count < avgRuns; count++) {
+			
+			for(int i=0; i < list_size; i++) {
+				node_list[i].current_dist = 0;
+			}
+			start = high_resolution_clock::now();
+			djk = dijkstra_vEBT(&newTree,node_list,list_size,source-1);
+			end = high_resolution_clock::now();
+			duration = duration_cast<microseconds>(end - start);
+			total_duration += duration.count();
+		}
+		cout << (float)total_duration/avgRuns << " ";
 	}
 
-	start = high_resolution_clock::now();
-	djk = dijkstra_fibo(node_list,list_size,source-1);
-	end = high_resolution_clock::now();
-	duration = duration_cast<microseconds>(end - start);
-	cout << duration.count() << endl;
-	print_dist(djk,list_size);
-
-	for(int i=0; i < list_size; i++) {
-		node_list[i].current_dist = INT_MAX - 1;
+	if(fibo) {
+		total_duration = 0;
+		for(int count = 0; count < avgRuns; count++) {
+			
+			for(int i=0; i < list_size; i++) {
+				node_list[i].current_dist = 0;
+			}
+			start = high_resolution_clock::now();
+			djk = dijkstra_fibo(node_list,list_size,source-1);
+			end = high_resolution_clock::now();
+			duration = duration_cast<microseconds>(end - start);
+			total_duration += duration.count();
+		}
+		cout << (float)total_duration/avgRuns << " ";
 	}
 
-	start = high_resolution_clock::now();
-	djk = dijkstra_bino(node_list,list_size,source-1);
-	end = high_resolution_clock::now();
-	duration = duration_cast<microseconds>(end - start);
-	cout << duration.count() << endl;
-	print_dist(djk,list_size);
+	if(bino) {
+		total_duration = 0;
+		for(int count = 0; count < avgRuns; count++) {
+			
+			for(int i=0; i < list_size; i++) {
+				node_list[i].current_dist = 0;
+			}
+			start = high_resolution_clock::now();
+			djk = dijkstra_bino(node_list,list_size,source-1);
+			end = high_resolution_clock::now();
+			duration = duration_cast<microseconds>(end - start);
+			total_duration += duration.count();
+		}
+		cout << (float)total_duration/avgRuns;
+	}
+	cout << endl;
 	
-	/*
-	int list_size;
-	node *node_list = get_data1(list_size);
-	int source;
-	scanf("%d",&source);
-	int *djk = dijkstra_bino(node_list,list_size,source-1);
-	print_dist(djk,list_size);
-	return 0;
-	*/
 	return 0;
 }
