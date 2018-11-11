@@ -124,15 +124,11 @@ void veb_tree :: delnode(node *del_node) {
 void veb_tree :: delnode(veb_node *head,int nkey) {
 
 	if(head -> sub_min == head -> sub_max) {
-		debug(1);
 		head -> min = head -> min -> next;
-		debug(11);
 		if(head -> min) head -> min -> prev = NULL;
 		head -> max = head -> min;
-		debug(2);
 	}
 	else if (head -> u == 2) {
-		debug(3);
 		if(nkey == head -> sub_min) {
 			head -> min = head -> min -> next;
 			if(!head -> min) {
@@ -140,7 +136,6 @@ void veb_tree :: delnode(veb_node *head,int nkey) {
 				head -> min = head -> max;
 			}
 			else head -> min -> prev = NULL;
-			debug(31);
 		}
 		else {
 			head -> max = head -> max -> next;
@@ -149,12 +144,10 @@ void veb_tree :: delnode(veb_node *head,int nkey) {
 				head -> max = head -> min;
 			}
 			else head -> max -> prev = NULL;
-			debug(32);
 		}
 
 	}
 	else {
-		debug(4);
 		if(nkey == head -> sub_min) {
 
 			head -> min = head -> min -> next;
@@ -168,9 +161,7 @@ void veb_tree :: delnode(veb_node *head,int nkey) {
 			head -> cluster[min_cluster] -> min = dummy;
 			head -> sub_min = nkey;
 		}
-		debug(5);
 		delnode(head -> cluster[nkey / head -> lower],nkey % head -> lower);
-		debug(6);
 		if(head -> cluster[nkey / head -> lower] -> min == NULL) {
 			delnode(head -> summary,nkey / head -> lower);
 
