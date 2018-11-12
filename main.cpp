@@ -227,7 +227,8 @@ int main(int args,char *argc[]) {
 	auto duration = duration_cast<microseconds>(end - start);
 
 	//perform an average of runs as defined in the avgRuns parameter
-	cout << list_size << " " << veb_size << " ";
+	if(args == 1) cout << "Total nodes " << list_size << " " << "Veb tree universe size " << veb_size << " \n";
+	else cout << list_size << " " << veb_size << " ";
 	if(veb) {
 		for(int count = 0; count < avgRuns; count++) {
 			
@@ -239,6 +240,11 @@ int main(int args,char *argc[]) {
 			end = high_resolution_clock::now();
 			duration = duration_cast<microseconds>(end - start);
 			total_duration += duration.count();
+		}
+		if(args == 1) {
+			cout << "vEB - Tree distance vector\n";
+			print_dist(djk,list_size);
+			printf("\n Duration \n");
 		}
 		cout << (float)total_duration/avgRuns << " ";
 	}
@@ -256,7 +262,13 @@ int main(int args,char *argc[]) {
 			duration = duration_cast<microseconds>(end - start);
 			total_duration += duration.count();
 		}
+		if(args == 1) {
+			cout << "Fibonacci - Tree Distance vector\n";
+			print_dist(djk,list_size);
+			printf("\n Duration \n");
+		}
 		cout << (float)total_duration/avgRuns << " ";
+
 	}
 
 	if(bino) {
