@@ -1,0 +1,30 @@
+Project on implementation of vEB-Trees and comparison with fibonacci heaps and binomial heaps.
+
+Snehashis Pal - 2018201072
+Anuj Bansal   - 2018201096
+
+The code for various components are given in their respective files i.e 
+vEB-Trees in van_emde.h,van_emde.cpp
+binomial heap in Binomial-heap.h,Binomial-heap.cpp
+fibonacci heap in fibonacci.h,fibonacci.cpp
+
+node.h,node.cpp has a generic node structure used to represent a graph node. 
+
+make will create a binary called main
+to run code in normal mode call ./main
+Then give the data for the graph in the following format 
+
+nodes edges
+node1 node2 weight_of_edge_between_them
+node2 node3 weight
+.
+.
+.
+node(n) node(k) weight
+source_vertex vEB_tree_universe
+
+this will give the output as a vector of distances from the source node to all other nodes 
+in the three trees provided as well as the execution duration of each code
+
+
+
